@@ -17,7 +17,7 @@ describe Ruby::Utils::Param do
   end
   subject { Ruby::Utils::Param.new(hash) }
 
-  describe '.mew' do
+  describe '.new' do
     it 'provides access to keys as methods' do
       expect(subject.a).to eq 1
       expect(subject.b).to eq 2
@@ -61,7 +61,7 @@ describe Ruby::Utils::Param do
   end
 
   describe '#getOrElse' do
-    it 'returns the values from string dot delimited keys' do
+   it 'returns the values from string dot delimited keys' do
       expect(subject.getOrElse('a')).to eq(1)
       expect(subject.getOrElse('.a')).to eq(1)
       expect(subject.getOrElse('b')).to eq(2)
@@ -107,7 +107,7 @@ describe Ruby::Utils::Param do
   end
 
   describe '#all?' do
-    it 'returns true whe all locators are present' do
+    it 'returns true when all locators are present' do
       expect(subject.all?('a', 'b', 'c', 'c.e')).to be true
     end
     it 'returns fasle if at least one locator is not present' do
@@ -119,7 +119,7 @@ describe Ruby::Utils::Param do
   end
 
   describe '#with' do
-    context 'when a ket can be found' do
+    context 'when a key can be found' do
       it 'calls the block specified' do
         executed = false
         subject.with('c.e.f') { |cef_result|

@@ -1,5 +1,7 @@
 module Ruby::Utils
   class Param
+    # TODO include Enumerable
+
     def initialize(hash = {})
       @original_hash = hash
 

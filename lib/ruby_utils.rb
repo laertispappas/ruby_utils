@@ -4,7 +4,6 @@ require 'ruby_utils/core_ext/hash'
 
 module Ruby
   module Utils
-
     module_function
     def Param(original = {})
       Param.new(original || {})
