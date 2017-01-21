@@ -28,6 +28,147 @@ TBD
 
 ## Features
 
+### Ruby::Utils::Option
+A scala like container for zero or one element. An option can be either Some[Object]
+or None object.
+
+Creating a Some or None option:
+```ruby
+  def find_person(id)
+    person = Person.find_by_id
+    person ? Some(person) : None
+  end
+
+  person = find_person(1)
+  person.class # None if not found else Some(person)
+```
+
+#### `#empty? || #defined?` True if None, false if Some
+
+```ruby
+  none = None
+  none.empty? # => true
+  none.defined? # => false
+
+  some = Some(Class.new)
+  some.empty? # => false
+  some.defined? # => true
+```
+
+#### `get` Raises an exception on None. If Some(instance) returns
+the instance that Some is holding:
+
+```ruby
+  none = None
+  none.get # => NoSuchElementError
+
+  some = Some(12)
+  some.get # => 12
+```
+
+#### `get_or_else(default)` Returns default when None else returns
+Some's value.
+
+```ruby
+  none = None
+  none.get_or_else("default") # => 'default'
+
+
+  some = Some(12)
+  some.get_or_else("default") # => 12
+```
+
+#### `map(f=nil, &block)` Applies function f Some.get or else returns
+None instance and the function f is not applied. F needs to respond to
+call thus it can be any object that implemens call or a proc / lambda
+object. If a block is given function f will not be aplied and the value
+will be yielded for evaluation. The result is returned.
+
+
+```ruby
+  f = ->(x) { x*x }
+
+  none = None
+  none.map(f) #=> None
+  none.map { |e| e* 100 } # -> none
+
+  some = Some(10)
+  some.map(f) # => Some(100)
+  some.map { |e| e*2 } # => Some(20)
+```
+
+#### `flat_map(f, &block)` If the option is nonempty, return a function applied to its value.
+Otherwise return None.
+
+```ruby
+  f = ->(x) { x * 10 }
+  none = None
+  none.flat_map(f) # => None
+  none.flat_map { |a| a } # => None
+
+  some = Some(20)
+  some.flat_map(f) # => 200
+  some.flat_map { |e| e * 2 } # => 40
+```
+
+#### `filter(p=nil, &block)` If the option is nonempty and the given predicate `p`
+yields `false` on its value, return `None`. Otherwise return the option value itself.
+
+```ruby
+  p = ->(x) { x % 2 == 0 }
+
+  none = None
+  none.filter(p) # => None
+  none.filter { |a| a == 1 } # => None
+
+  some = Some(10)
+  some.filter(p) # => Some(10)
+
+  some = Some(3)
+  some.filter(p) # => None
+```
+
+#### `or_else(alternative)` If the option is nonempty return it, otherwise return the result of evaluating an alternative expression.
+
+```ruby
+  none = None
+  none.or_else(12) # => 12
+  none.or_else(Some(12)) # => Some(12)
+
+  some = Some(10)
+  some.or_else(111) # => Some(10)
+```
+
+#### `match` [Experimental] Provides pseudo pattern match for option classes (see also `List#match`)
+
+```ruby
+  def get(id)
+    if id == 1
+      None
+    else
+      Some(id)
+    end
+  end
+
+  some_value = get(1) # None
+  result = some_value.match {
+    on None => 'missing'
+    on Some(x) => x * 100
+  }
+
+  purs result # => 'missing'
+
+
+  other_value = get(10)
+  res2 = other_value.match {
+    on None => 'missing2'
+    on Some(y) => y * 10
+  }
+
+  puts res2 # => 100
+```
+
+
 ### Ruby::Utils::Param
 A wrapper around a ruby hash that takes a `hash` on initialization:
 

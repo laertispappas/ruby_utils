@@ -67,7 +67,7 @@ module Ruby::Utils
 
         it 'calls the block if one is given' do
           result = subject.map { |v| v * 2 }
-          expect(result).to eq 200
+          expect(result.get).to eq 200
         end
       end
 

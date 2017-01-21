@@ -26,6 +26,7 @@ module Ruby
 
         if block_given?
           result = yield(self.get)
+          Some(result)
         else
           Some(f.call(self.get))
         end
