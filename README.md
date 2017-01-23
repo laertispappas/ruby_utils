@@ -55,8 +55,7 @@ Creating a Some or None option:
   some.defined? # => true
 ```
 
-#### `get` Raises an exception on None. If Some(instance) returns
-the instance that Some is holding:
+#### `get` Returns the option's value or an exception is raised in case of non empty option.
 
 ```ruby
   none = None
@@ -66,8 +65,7 @@ the instance that Some is holding:
   some.get # => 12
 ```
 
-#### `get_or_else(default)` Returns default when None else returns
-Some's value.
+#### `get_or_else(default)` Returns the option's value if the option is nonempty, otherwise return the result of evaluating `default`.
 
 ```ruby
   none = None
@@ -78,12 +76,7 @@ Some's value.
   some.get_or_else("default") # => 12
 ```
 
-#### `map(f=nil, &block)` Applies function f Some.get or else returns
-None instance and the function f is not applied. F needs to respond to
-call thus it can be any object that implemens call or a proc / lambda
-object. If a block is given function f will not be aplied and the value
-will be yielded for evaluation. The result is returned.
-
+#### `map(f=nil, &block)` Returns a Some containing the result of applying f / or evaluating the block to self option's value if this option is nonempty. Otherwise return None
 
 ```ruby
   f = ->(x) { x*x }
@@ -111,8 +104,7 @@ Otherwise return None.
   some.flat_map { |e| e * 2 } # => 40
 ```
 
-#### `filter(p=nil, &block)` If the option is nonempty and the given predicate `p`
-yields `false` on its value, return `None`. Otherwise return the option value itself.
+#### `filter(p=nil, &block)` If the option is nonempty and the given predicate `p` yields `false` on its value, return `None`. Otherwise return the option value itself.
 
 ```ruby
   p = ->(x) { x % 2 == 0 }
