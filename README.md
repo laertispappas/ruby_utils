@@ -43,7 +43,7 @@ Creating a Some or None option:
   person.class # None if not found else Some(person)
 ```
 
-#### `#empty? || #defined?` True if None, false if Some
+#### `#empty?` True if None, false if Some
 
 ```ruby
   none = None
@@ -54,8 +54,9 @@ Creating a Some or None option:
   some.empty? # => false
   some.defined? # => true
 ```
+#### `#defined?` True if Some else false on None
 
-#### `get` Returns the option's value or an exception is raised in case of non empty option.
+#### `get` Returns the option's value or an exception is raised on empty option.
 
 ```ruby
   none = None
