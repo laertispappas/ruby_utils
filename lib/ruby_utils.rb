@@ -17,5 +17,23 @@ module Ruby
     def Param(original = {})
       Param.new(original || {})
     end
+
+    def flatten(array)
+      unless array.respond_to?(:each)
+        raise "Utils::Array#flatten: An array should be passed!"
+      end
+      result = []
+
+      while(element = array.shift) do
+        if element.respond_to?(:each)
+          result += self.flatten(element)
+        else
+          result << element
+        end
+      end
+
+      result
+    end
+
   end
 end

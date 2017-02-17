@@ -96,4 +96,23 @@ describe Ruby::Utils do
       expect(result).to eq 'missing'
     end
   end
+
+  describe '.array_flatten' do
+    subject { Ruby::Utils }
+    context 'when nil is passed' do
+      it { expect{ subject.flatten(nil) }.to raise_error(RuntimeError) }
+    end
+    context 'when an empty array is passed' do
+      it { expect(subject.flatten([])).to be_empty }
+    end
+
+    context 'when a non nested array is passed' do
+      it { expect(subject.flatten([1,2,3,4])).to eq [1,2,3,4] }
+    end
+
+    it 'should flatten a nested array' do
+      expect(subject.flatten([[1,2,[3]],4])).to eq [1,2,3,4]
+    end
+  end
+
 end
